@@ -2,13 +2,19 @@ from pydantic import BaseModel
 
 
 class UserCreate(BaseModel):
-    score: int
     name: str
+    lastname: str
+    score: int
+
+
+class UserUpdate(BaseModel):
+    score: int
 
 
 class UserResponse(BaseModel):
     id: int
     name: str
+    lastname: str
     score: int
 
     class Config:
