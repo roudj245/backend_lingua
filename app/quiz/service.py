@@ -50,3 +50,12 @@ def update_user_score(db: Session, name: str, lastname: str, user_update: UserUp
             db.refresh(user)
     
     return user
+
+
+def delete_all_users(db: Session) -> None:
+    db.query(User).delete()
+    db.commit()
+
+
+
+
