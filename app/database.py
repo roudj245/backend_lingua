@@ -23,8 +23,12 @@ else:
     engine = create_engine(
         DATABASE_URL,
         pool_pre_ping=True,  # Verify connections before using them
-        pool_size=10,  # Connection pool size
-        max_overflow=20  # Max connections beyond pool_size
+        pool_size=40,  # Base connection pool - always ready
+        max_overflow=50,  # Additional connections during peaks (total: 90)
+        pool_recycle=3600,  # Recycle connections after 1 hour
+        pool_timeout=20,  # Wait max 20 seconds for available connection
+        echo_pool=False,  # Disable pool logging for performance
+        pool_use_lifo=True  # Use most recently returned connections first (faster)
     )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
