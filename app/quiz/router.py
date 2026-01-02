@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.quiz.schemas import UserCreate, UserResponse, UserUpdate
-from app.quiz.service import create_or_update_user, get_score_user, get_user_score_all, update_user_score, delete_all_users
+from app.quiz.service import create_or_update_user, get_score_user, get_user_score_all, update_user_score, delete_all_users , delete_user
 
 router = APIRouter(prefix="/quiz", tags=["quiz"])
 
@@ -34,6 +34,9 @@ def delete_users(db: Session = Depends(get_db)):
     delete_all_users(db)
 
 
+@router.delete("/user/{user_id}", response_model=str)
+def delete_user_endpoint(user_id: int, db: Session = Depends(get_db)):
+    return delete_user(db, user_id)
 
 
 

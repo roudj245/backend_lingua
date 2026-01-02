@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.quiz.models import User
 from app.quiz.schemas import UserCreate, UserResponse, UserUpdate
+from fastapi import HTTPException
 
 
 def create_or_update_user(db: Session, user: UserCreate) -> UserResponse:
@@ -52,9 +53,21 @@ def update_user_score(db: Session, name: str, lastname: str, user_update: UserUp
     return user
 
 
-def delete_all_users(db: Session) -> None:
+def delete_all_users(db: Session) -> str:
     db.query(User).delete()
     db.commit()
+    return "All users deleted successfully"
+
+
+
+def delete_user(db: Session, user_id: int) -> str:
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(user)
+    db.commit()
+    return "User deleted successfully"
+
 
 
 
